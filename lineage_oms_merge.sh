@@ -135,6 +135,7 @@ function reportWarning() {
 # HARD CODED FOR TESTING
 COMMITTER="Donald Munn"
 ORG="Roach2010"
+DEVBRANCH=LineageOMS
 
 if [[ $# -eq 0 ]]; then
     reportError "Source directory not specified!" -c; help_menu && exit
@@ -191,6 +192,7 @@ for FOLDER in ${SUBS_REPOS}; do
 
     # SET PROPER URL
     URL=android_$( echo ${FOLDER} | sed "s/\//_/g" )
+    repo start ${DEVBRANCH} ${SOURCE_DIR}/${FOLDER}
 
     BRANCH=cm-14.1
 
