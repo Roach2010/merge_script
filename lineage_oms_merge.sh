@@ -132,6 +132,10 @@ function reportWarning() {
 #             #
 ###############
 
+# HARD CODED FOR TESTING
+COMMITTER="Donald Munn"
+ORG="Roach2010"
+
 if [[ $# -eq 0 ]]; then
     reportError "Source directory not specified!" -c; help_menu && exit
 fi
@@ -191,15 +195,15 @@ for FOLDER in ${SUBS_REPOS}; do
     BRANCH=cm-14.1
 
     # FETCH THE REPO
-    git fetch https://github.com/LineageOMS/${URL} ${BRANCH}
+    git fetch https://github.com/${ORG}/${URL} ${BRANCH}
 
     # GIT GYMNASTICS (GETS MESSY, BEWARE)
     # FIRST HASH WILL ALWAYS BE THE FETCH HEAD
     FIRST_HASH=$(git log --format=%H -1 FETCH_HEAD)
 
     # SECOND HASH WILL BE THE LAST THING I COMMITTED
-    NUMBER_OF_COMMITS=$(( $( git log --format=%H --committer="Nathan Chancellor" FETCH_HEAD | wc -l ) - 1 ))
-    SECOND_HASH=$( git log --format=%H --committer="Nathan Chancellor" FETCH_HEAD~${NUMBER_OF_COMMITS}^..FETCH_HEAD~${NUMBER_OF_COMMITS} )
+    NUMBER_OF_COMMITS=$(( $( git log --format=%H --committer="${COMMITTER}" FETCH_HEAD | wc -l ) - 1 ))
+    SECOND_HASH=$( git log --format=%H --committer="${COMMITTER}" FETCH_HEAD~${NUMBER_OF_COMMITS}^..FETCH_HEAD~${NUMBER_OF_COMMITS} )
 
     # NOW THAT WE HAVE THE HASHES, WE WANT TO TRY AND SEE IF OMS ALREADY EXISTS
     # THIS SCRIPT NEEDS TO BE RUN ON A CLEAN REPO
@@ -231,7 +235,7 @@ newLine; echoText "Syncing packages/services/ThemeInterfacer"
 if [[ ! -f .repo/local_manifests/substratum.xml ]]; then
     mkdir -p .repo/local_manifests
     curl --silent --output .repo/local_manifests/substratum.xml \
-    https://raw.githubusercontent.com/LineageOMS/merge_script/master/substratum.xml
+    https://raw.githubusercontent.com/${ORG}/merge_script/master/substratum.xml
 fi
 
 repo sync --force-sync packages/services/ThemeInterfacer
