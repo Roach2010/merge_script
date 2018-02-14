@@ -136,7 +136,7 @@ function reportWarning() {
 ORG="Roach2010"
 DEVBRANCH=LineageOMS
 
-if [[ $# -eq 0 ]]; then
+if [[ -z ${SOURCE_DIR} ]]; then
     reportError "Source directory not specified!" -c; help_menu && exit
 fi
 
